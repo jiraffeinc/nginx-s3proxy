@@ -18,10 +18,11 @@ RUN apt-get -y update && \
         git && \
     cd /usr/local/src && \
     wget "http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" && \
-    tar zvxf nginx-${NGINX_VERSION}.tar.gz && \
-    cd nginx-${NGINX_VERSION} && \
-    git clone https://github.com/anomalizer/ngx_aws_auth.git /usr/lib/nginx/modules/ngx_aws_auth && \
-    ./configure --prefix=/usr/local/nginx-${NGINX_VERSION} \
+    tar zxf nginx-${NGINX_VERSION}.tar.gz && \
+    mv nginx-${NGINX_VERSION} nginx && \
+    cd nginx && \
+    git clone -b 2.1.1 https://github.com/anomalizer/ngx_aws_auth.git /usr/lib/nginx/modules/ngx_aws_auth && \
+    ./configure --prefix=/usr/local/nginx \
         --with-debug \
         --with-pcre-jit \
         --with-http_ssl_module \
@@ -39,8 +40,12 @@ RUN apt-get -y update && \
         --add-module=/usr/lib/nginx/modules/ngx_aws_auth \
         --with-ipv6 && \
     make install && \
-    ln -sf /usr/local/nginx-${NGINX_VERSION} /usr/local/nginx && \
-    mkdir -p /var/cache/nginx && \
-    apt-get purge -y git && \
-    apt-get autoremove -y && \
-    mkdir -p /data/cache
+    ln -sf /usr/local/nginx/sbin/nginx /usr/local/bin/nginx && \
+    ln -sf /dev/stdout /usr/local/nginx/logs/access.log && \
+    ln -sf /dev/stderr /usr/local/nginx/logs/error.log
+
+EXPOSE 80
+
+STOPSIGNAL SIGTERM
+
+CMD ["nginx", "-c", "/usr/local/nginx/conf/nginx.conf", "-g", "daemon off;"]
