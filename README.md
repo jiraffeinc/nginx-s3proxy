@@ -7,7 +7,7 @@
 ## Start a container
 
 ```
-$ docker run --rm -p 80:80 nginx-s3proxy
+$ docker run --rm -p 80:80 jiraffeinc/nginx-s3proxy
 ```
 
 ## Sample config
