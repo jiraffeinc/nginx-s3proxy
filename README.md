@@ -1,7 +1,7 @@
 # nginx-s3proxy
 ## Versions
-- debian 9
-- nginx 1.14.0
+- debian 10
+- nginx 1.17.10
 - ngx_aws_auth 2.1.1
 
 ## Start a container

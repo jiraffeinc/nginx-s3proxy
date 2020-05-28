@@ -1,6 +1,6 @@
-FROM debian:9-slim
+FROM debian:buster-slim
 
-ENV NGINX_VERSION=1.14.0
+ENV NGINX_VERSION=1.17.10
 
 RUN apt-get -y update && \
     apt-get install -y \
